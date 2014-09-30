@@ -17,3 +17,15 @@ libraryDependencies ++= Seq(
 
 // This enables asset pipeline fingerprinting (cache invalidation)
 pipelineStages := Seq(rjs, digest)
+
+// Create a map of versioned assets, replacing the empty versions.js
+DigestKeys.indexPath := Some("javascripts/versions.js")
+
+// Wrap the asset index in a requirejs module definition and strip .js extensions
+DigestKeys.indexWriter := { index =>
+  val extensionless = index map { case (p, v) => p.stripSuffix(".js") -> v.stripSuffix(".js") }
+  "define(" + SbtDigest.writeJsIndex(extensionless) + ");"
+}
+
+// Exclude js maps and srcs from fingerprinting
+excludeFilter in digest := HiddenFileFilter || "*.js.map" || "*.js.src.js"
