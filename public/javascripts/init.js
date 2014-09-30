@@ -6,6 +6,6 @@
 // 'module1.js' explicitly, we'd have to have the versioning present in every
 // single javascript file that loads module1, e.g.:
 //   require(['modules/a95c530a7af5f492a74499e70578d150-module1'], function(module1) {
-require(['modules/module1'], function(module1) {
+require(['versioned!modules/module1'], function(module1) {
   module1.start();
 });
